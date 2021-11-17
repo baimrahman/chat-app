@@ -1,6 +1,5 @@
 <template>
   <div>
-    <button @click="$router.push('/tes')">Tes</button>
     <button v-if="joinShow" @click="joinRoom">Join Room</button>
     <button v-if="!joinShow" @click="closeWs">Leave Room</button>
     <div id="messages">
