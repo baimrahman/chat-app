@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div>Hello</div>
     <button v-if="joinShow" @click="joinRoom">Join Room</button>
     <button v-if="!joinShow" @click="closeWs">Leave Room</button>
     <div id="messages">
@@ -29,44 +30,52 @@ export default {
       message: "",
       messages: [],
       joinShow: true,
+      socket: null
     };
   },
+  mounted(){
+    this.socket = this.$nuxtSocket({
+      name: 'home',
+      reconnection: false
+    })
+    console.log(this.socket)
+  },
   beforeMount() {
-    socket = io("ws://localhost:4000", {
-      auth: {
-        username: this.$route.query.username,
-        password: "123",
-      },
-    });
-    socket.on("connect", (sc) => {
-      console.log("ws connected");
-    });
-    socket.on("message", (message) => {
-      this.messages.push(message);
-    });
-    socket.on("joined", (sc) => {
-      if (sc) {
-        this.joinShow = false;
-      }
-    });
-    socket.on("unsubscribed", (sc) => {
-      if (sc) {
-        this.joinShow = true;
-      }
-    });
+    // socket = io("ws://localhost:4000", {
+    //   auth: {
+    //     username: this.$route.query.username,
+    //     password: "123",
+    //   },
+    // });
+    // socket.on("connect", (sc) => {
+    //   console.log("ws connected");
+    // });
+    // socket.on("message", (message) => {
+    //   this.messages.push(message);
+    // });
+    // socket.on("joined", (sc) => {
+    //   if (sc) {
+    //     this.joinShow = false;
+    //   }
+    // });
+    // socket.on("unsubscribed", (sc) => {
+    //   if (sc) {
+    //     this.joinShow = true;
+    //   }
+    // });
   },
   methods: {
-    closeWs() {
-      socket.emit("unsubscribe");
-      this.messages = [];
-    },
-    sendMessage() {
-      socket.emit("send-message", this.message);
-      this.message = "";
-    },
-    joinRoom() {
-      socket.emit("join");
-    },
+    // closeWs() {
+    //   socket.emit("unsubscribe");
+    //   this.messages = [];
+    // },
+    // sendMessage() {
+    //   socket.emit("send-message", this.message);
+    //   this.message = "";
+    // },
+    // joinRoom() {
+    //   socket.emit("join");
+    // },
   },
 };
 </script>
